@@ -4,6 +4,8 @@
 
 ## 部署
 
+启动mongodb
+
 ```
 npm i --registry=https://registry.npm.taobao.org
 ```
