@@ -1,8 +1,6 @@
-'use strict';
-
 var http = require('http');
 var assert = require('assert');
-var routes = require('./lib/route.js');
+var rules = require('./lib/server.js');
 
 /*
  * 匹配路由规则
@@ -74,7 +72,7 @@ function matchRules(req, res, rules, cb){
 }
 
 http.createServer(function(req, res){
-	matchRules(req, res, routes, function(){
-		// ...
+	matchRules(req, res, rules, function(r){
+		console.log('request url: ' + req.url);
 	});
-}).listen(5900);
+}).listen(8080);
