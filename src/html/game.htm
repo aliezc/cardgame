@@ -6,8 +6,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 		<link rel="stylesheet" href="/css/style.css">
 		<script src="/js/short.min.js"></script>
+		<script src="/js/a.js"></script>
 	</head>
 	<body>
-		<p>hello world</p>
+		<div class="page" id="start_page" style="display:block;background:linear-gradient(45deg,#9af0ff,#9a9aff);">
+			<div class="game-title">{$game_title}</div>
+			<div class="btns">
+				<a href="javascript:;" class="login" id="login">登录</a>
+				<a href="javascript:;" class="reg" id="reg">注册</a>
+			</div>
+		</div>
+		<div class="page" id="login_page" style="background:#efefef;">
+			<div class="login-form">
+				<h1>登录</h1>
+				<p><input type="text" id="login_user" placeholder="用户名"></p>
+				<p><input type="password" id="login_pwd" placeholder="密码"></p>
+				<p><a href="javascript:;" id="loginbtn">登录</a></p>
+				<p><a href="javascript:;" class="back-home" data-rootid="login_page">&lt;&lt;返回</a></p>
+			</div>
+		</div>
+		<div class="page" id="reg_page" style="background:#efefef;">
+			<div class="login-form">
+				<h1>注册</h1>
+				<p><input type="text" id="reg_user" placeholder="用户名"></p>
+				<p><input type="password" id="reg_pwd" placeholder="密码"></p>
+				<p><input type="password" id="reg_pwd2" placeholder="确认密码"></p>
+				<p><a href="javascript:;" id="regbtn">注册</a></p>
+				<p><a href="javascript:;" class="back-home" data-rootid="reg_page">&lt;&lt;返回</a></p>
+			</div>
+		</div>
 	</body>
 </html>

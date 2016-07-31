@@ -95,7 +95,7 @@ module.exports = {
 				util.sendObj.call(res, {
 					error: 1001,
 					message: 'Invalid arguments'
-				}, 500);
+				}, 200);
 				return;
 			}
 			
@@ -111,14 +111,14 @@ module.exports = {
 						util.sendObj.call(res, {
 							error: 1002,
 							message: 'Create fail maybe username exists'
-						}, 500);
+						}, 200);
 					}
 				});
 			}else{
 				util.sendObj.call(res, {
 					error: 1001,
 					message: 'Invalid arguments'
-				}, 500);
+				}, 200);
 				return;
 			}
 		});
@@ -134,7 +134,7 @@ module.exports = {
 				util.sendObj.call(res, {
 					error: 1001,
 					message: 'Invalid arguments'
-				}, 500);
+				}, 200);
 				return;
 			}
 			
@@ -148,18 +148,18 @@ module.exports = {
 							"set-cookie": "CSESID=" + at + ";path=/;httponly"
 						});
 					}else{
-						// 创建失败
+						// 验证失败
 						util.sendObj.call(res, {
 							error: 1003,
 							message: 'User doesn\'t exists or bad password'
-						}, 500);
+						}, 200);
 					}
 				});
 			}else{
 				util.sendObj.call(res, {
 					error: 1001,
 					message: 'Invalid arguments'
-				}, 500);
+				}, 200);
 				return;
 			}
 		});

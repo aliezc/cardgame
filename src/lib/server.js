@@ -23,7 +23,8 @@ module.exports = [{
 	matcher: '/game',
 	handle: function(req, res){
 		util.render(res, './html/game.htm', {
-			title: '天天卡牌'
+			title: '天天卡牌 - 一直在测试的测试服',
+			game_title: '天天卡牌'
 		});
 	}
 }];
