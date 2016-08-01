@@ -15,6 +15,7 @@ function createUser(info, cb){
 		
 		// 游戏得分记录
 		gameRecord: {
+			total: 0,
 			win: 0,			//胜利
 			even: 0,		//平手
 			lose: 0			//失败
@@ -27,7 +28,12 @@ function createUser(info, cb){
 		cards: [],			// 玩家拥有的卡牌
 		deck: [],			// 玩家编制的卡组
 		status: 1,			// 帐号状态
-		accesstoken: null	// 授权状态
+		accesstoken: null,	// 授权状态
+		headimg: 1,			// 头像
+		level: 1,			// 等级
+		exp: 0,				// 经验
+		cup: 0,				// 奖杯
+		mmr: 1500,			// MMR
 	}
 	
 	db.insertExists('user', {user: info.user}, userinfo, function(res){
@@ -83,8 +89,62 @@ function verificateUser(info, cb){
 	});
 }
 
+// 验证授权码
+function verificateToken(t, cb){
+	assert('string' == typeof t);
+	assert('function' == typeof cb);
+	
+	db.find('user', {accesstoken: t}, function(arr){
+		if(arr.length > 0){
+			var u = arr[0];
+			if(Date.now() - u.accesstime > 21600000){
+				// 授权码过期
+				cb.call(null, false);
+			}else{
+				cb.call(null, true);
+			}
+		}else{
+			// 不存在授权码
+			cb.call(null, false);
+		}
+	});
+}
+
+// 更新授权码
+function updateToken(t, cb){
+	assert(typeof t == 'string');
+	assert(typeof cb == 'function');
+	
+	verificateToken(t, function(e){
+		if(e){
+			db.find('user', {accesstoken: t}, function(arr){
+				var u = arr[0];
+				u.accesstime = Date.now();
+				db.update('user', {accesstoken: t}, u, function(v){
+					if(v){
+						cb.call(null, true);
+					}else{
+						// 更新失败
+						cb.call(null);
+					}
+				});
+			});
+		}else{
+			// 授权码无效
+			cb.call(null);
+		}
+	});
+}
+
 module.exports = {
 	createUser: function(req, res){
+		if(req.method != 'POST'){
+			util.sendObj.call(res, {
+				error: 2001,
+				message: 'Invalid request method'
+			});
+			return;
+		}
 		var b = new Buffer('');
 		req.on('data', function(chunk){
 			b = Buffer.concat([b, chunk]);
@@ -123,7 +183,15 @@ module.exports = {
 			}
 		});
 	},
+	
 	verificateUser: function(req, res){
+		if(req.method != 'POST'){
+			util.sendObj.call(res, {
+				error: 2001,
+				message: 'Invalid request method'
+			});
+			return;
+		}
 		var b = new Buffer('');
 		req.on('data', function(chunk){
 			b = Buffer.concat([b, chunk]);
@@ -152,6 +220,100 @@ module.exports = {
 						util.sendObj.call(res, {
 							error: 1003,
 							message: 'User doesn\'t exists or bad password'
+						}, 200);
+					}
+				});
+			}else{
+				util.sendObj.call(res, {
+					error: 1001,
+					message: 'Invalid arguments'
+				}, 200);
+				return;
+			}
+		});
+	},
+	
+	verificateToken: function(req, res){
+		if(req.method != 'POST'){
+			util.sendObj.call(res, {
+				error: 2001,
+				message: 'Invalid request method'
+			});
+			return;
+		}
+		var b = new Buffer('');
+		req.on('data', function(chunk){
+			b = Buffer.concat([b, chunk]);
+		}).on('end', function(){
+			try{
+				var q = require('querystring').parse(b.toString());
+			}catch(e){
+				util.sendObj.call(res, {
+					error: 1001,
+					message: 'Invalid arguments'
+				}, 200);
+				return;
+			}
+			
+			if(q.token){
+				verificateToken(q.token, function(e){
+					if(e){
+						util.sendObj.call(res, {
+							error: 0,
+							ok: true
+						});
+					}else{
+						// 验证失败
+						util.sendObj.call(res, {
+							error: 1004,
+							message: 'Token verificate fail'
+						}, 200);
+					}
+				});
+			}else{
+				util.sendObj.call(res, {
+					error: 1001,
+					message: 'Invalid arguments'
+				}, 200);
+				return;
+			}
+		});
+	},
+	
+	updateToken: function(req, res){
+		if(req.method != 'POST'){
+			util.sendObj.call(res, {
+				error: 2001,
+				message: 'Invalid request method'
+			});
+			return;
+		}
+		var b = new Buffer('');
+		req.on('data', function(chunk){
+			b = Buffer.concat([b, chunk]);
+		}).on('end', function(){
+			try{
+				var q = require('querystring').parse(b.toString());
+			}catch(e){
+				util.sendObj.call(res, {
+					error: 1001,
+					message: 'Invalid arguments'
+				}, 200);
+				return;
+			}
+			
+			if(q.token){
+				updateToken(q.token, function(e){
+					if(e){
+						util.sendObj.call(res, {
+							error: 0,
+							ok: true
+						});
+					}else{
+						// 验证失败
+						util.sendObj.call(res, {
+							error: 1004,
+							message: 'Token update fail'
 						}, 200);
 					}
 				});

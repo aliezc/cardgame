@@ -29,6 +29,16 @@ a{
 	text-shadow: 4px 4px 0 #fff;
 }
 
+#toast{
+	display: none;
+	bottom: 10%;
+	background: rgba(0,0,0,.5);
+	color: #fff;
+	padding: 12px 24px;
+	border-radius: 6px;
+	position: fixed;
+}
+
 #start_page .btns{
 	margin-top: 23%;
 }
@@ -94,4 +104,56 @@ a{
 }
 #regbtn{
 	background: #de3c20;
+}
+
+.tabs{
+	overflow: hidden;
+	background: #fe899a;
+}
+.tabs a{
+	float: left;
+	width: 25%;
+	box-sizing: border-box;
+	text-align: center;
+	height: 42px;
+	line-height: 42px;
+	color: #fff;
+	border-bottom: solid 3px transparent;
+}
+.tabs a.on{
+	border-color: #fff;
+}
+
+.tabpages > .p{
+	display: none;
+}
+
+.container{
+	margin: 12px;
+	box-sizing: border-box;
+	padding: 12px;
+	background: rgba(240,240,240,.6);
+	color: #555;
+	overflow: hidden;
+	border-radius: 3px;
+}
+
+.p_name{
+	float: left;
+}
+
+.p_gstatics{
+	float: right;
+	background: #4a303f;
+	color: #fff;
+	padding: 6px 24px;
+	border-radius: 5px;
+}
+.p_gstatics div{
+	height: 26px;
+	line-height: 26px;
+}
+
+.p_gstatics span{
+	margin: 0 6px;
 }
