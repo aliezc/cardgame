@@ -41,6 +41,57 @@ function toast(s){
 	}, 3000);
 }
 
+// 加载用户信息
+function loadUserinfo(){
+	if(localStorage.accesstoken){
+		ajax({
+			method: 'POST',
+			url: '/user/getinfo',
+			data: {
+				token: localStorage.accesstoken
+			}
+		}, function(data, status){
+			if(status == 200){
+				try{
+					var json = JSON.parse(data);
+				}catch(e){
+					toast('解析数据错误');
+					return;
+				}
+				
+				if(!json.error){
+					// 获取成功
+					$$('#avatar').each(function(){
+						this.src = '/image/head' + json.user.headimg.toString() + '.jpg';
+					});
+					$$('#level').each(function(){
+						this.textContent = 'Lv. ' + json.user.level.toString();
+					});
+					$$('#nickname').each(function(){
+						this.textContent = json.user.nickname;
+					});
+					$$('#usercup').each(function(){
+						this.textContent = json.user.cup.toString();
+					});
+					$$('#win').each(function(){
+						this.textContent = json.user.game.win.toString();
+					});
+					$$('#even').each(function(){
+						this.textContent = json.user.game.even.toString();
+					});
+					$$('#lose').each(function(){
+						this.textContent = json.user.game.lose.toString();
+					});
+				}else{
+					toast('获取用户信息失败');
+				}
+			}else{
+				toast('服务器请求失败');
+			}
+		});
+	}
+}
+
 // 更新token
 function updateToken(){
 	if(localStorage.accesstoken){
@@ -189,14 +240,8 @@ function init(){
 			})
 		});
 	});
-}
-
-document.ready(function(){
-	window.GAME = {};
-	verificate();
-	init();
-	initTab();
 	
+	// 登录按钮
 	$$('#loginbtn').each(function(){
 		this.on('click', function(){
 			var user = $$('#login_user')[0].value.trim();
@@ -235,6 +280,75 @@ document.ready(function(){
 			})
 		});
 	});
+}
+
+// get deck list
+function getdecklist(){
+	if(localStorage.accesstoken){
+		ajax({
+			method: 'POST',
+			url: '/deck/getlist',
+			data: {
+				token: localStorage.accesstoken
+			}
+		}, function(data, status){
+			if(status == 200){
+				try{
+					var json = JSON.parse(data);
+				}catch(e){
+					toast('解析数据错误');
+					return;
+				}
+				
+				if(!json.error){
+					// 授权码有效  更新授权码
+					var deck = json.deck;
+					
+					$$('#decklist').each(function(){
+						this.innerHTML = '';
+						for(var i = 0; i < deck.length; i++){
+							if(deck[i].onBattle){
+								this.innerHTML += '<div>\
+							<a href="javascript:;" class="delete" data-id="'+deck[i].id+'">删除</a>\
+							<a href="javascript:;" class="seton off" data-id="'+deck[i].id+'">出战</a>\
+							<a href="javascript:;" class="title">'+deck[i].title+'</a>\
+						</div>';
+							}else{
+								this.innerHTML += '<div>\
+							<a href="javascript:;" class="delete" data-id="'+deck[i].id+'">删除</a>\
+							<a href="javascript:;" class="seton" data-id="'+deck[i].id+'">出战</a>\
+							<a href="javascript:;" class="title">'+deck[i].title+'</a>\
+						</div>';
+							}
+						}
+					});
+				}else{
+					toast('获取列表失败');
+				}
+			}else{
+				toast('服务器请求失败');
+			}
+		});
+	}
+}
+
+document.ready(function(){
+	window.GAME = {};
+	verificate();
+	init();
+	initTab();
 	
+	// 获取用户信息
+	$$('#user_tab').each(function(){
+		this.on('click', function(){
+			loadUserinfo();
+		});
+	});
 	
+	// get deck list
+	$$('#deck_tab').each(function(){
+		this.on('click', function(){
+			getdecklist();
+		});
+	});
 });

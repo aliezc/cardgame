@@ -38,8 +38,8 @@
 		<div class="page" id="main_page" style="background:#3a2f30;color:#fff;">
 			<div class="tabs" id="main_tab" data-page="main_page">
 				<a class="on" data-page="pg_game">游戏</a>
-				<a data-page="pg_deck">卡组</a>
-				<a data-page="pg_user">个人</a>
+				<a data-page="pg_deck" id="deck_tab">卡组</a>
+				<a data-page="pg_user" id="user_tab">个人</a>
 				<a data-page="pg_mall">商城</a>
 			</div>
 			<div class="tabpages" id="main_page">
@@ -47,16 +47,37 @@
 					<p>a</p>
 				</div>
 				<div class="p" id="pg_deck">
-					<p>b</p>
+					<div class="decklist" id="decklist">
+						<div>
+							<a href="javascript:;" class="delete">删除</a>
+							<a href="javascript:;" class="seton off">出战</a>
+							<a href="javascript:;" class="title">ssb</a>
+						</div>
+						<div>
+							<a href="javascript:;" class="delete">删除</a>
+							<a href="javascript:;" class="seton">出战</a>
+							<a href="javascript:;" class="title">ssb</a>
+						</div>
+					</div>
+					<a href="javascript:;" id="addnewdeck">创建新卡组</a>
 				</div>
 				<div class="p" id="pg_user">
 					<div class="container">
-						<div class="p_name">玩家昵称</div>
-						<div class="p_gstatics">
-							<div><span class="title">胜利</span><span class="value">0</span></div>
-							<div><span class="title">平手</span><span class="value">0</span></div>
-							<div><span class="title">失败</span><span class="value">0</span></div>
+						<div class="p_info">
+							<a href="javascript:;" id="change_avatar">
+								<img src="" id="avatar" alt="头像">
+							</a>
+							<div class="p_i">
+								<div class="p_name"><span class="p_level" id="level">Lv. </span><span id="nickname"></span></div>
+								<div class="p_cup" id="usercup"></div>
+							</div>
 						</div>
+						<div class="p_gstatics">
+							<div><span class="title">胜利</span><span class="value" id="win"></span></div>
+							<div><span class="title">平手</span><span class="value" id="even"></span></div>
+							<div><span class="title">失败</span><span class="value" id="lose"></span></div>
+						</div>
+						<div class="p_exp"><div id="exp"></div></div>
 					</div>
 				</div>
 				<div class="p" id="pg_mall">

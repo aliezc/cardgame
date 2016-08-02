@@ -33,7 +33,7 @@ function createUser(info, cb){
 		level: 1,			// 等级
 		exp: 0,				// 经验
 		cup: 0,				// 奖杯
-		mmr: 1500,			// MMR
+		mmr: 1500			// MMR
 	}
 	
 	db.insertExists('user', {user: info.user}, userinfo, function(res){
@@ -131,6 +131,37 @@ function updateToken(t, cb){
 			});
 		}else{
 			// 授权码无效
+			cb.call(null);
+		}
+	});
+}
+
+// 获取用户信息
+function getUserinfo(t, cb){
+	assert('string' == typeof t);
+	assert('function' == typeof cb);
+	
+	db.find('user', {accesstoken: t}, function(arr){
+		if(arr.length){
+			var u = arr[0];
+			if(Date.now() - u.accesstime < 21600000){
+				var r = {
+					user: u.user,
+					nickname: u.nickname || u.user,
+					headimg: u.headimg,
+					level: u.level,
+					cup: u.cup,
+					exp: u.exp,
+					game: u.gameRecord
+				};
+				
+				cb.call(null, r);
+			}else{
+				// 授权码过期
+				cb.call(null);
+			}
+		}else{
+			// 不存在accesstoken
 			cb.call(null);
 		}
 	});
@@ -314,6 +345,54 @@ module.exports = {
 						util.sendObj.call(res, {
 							error: 1004,
 							message: 'Token update fail'
+						}, 200);
+					}
+				});
+			}else{
+				util.sendObj.call(res, {
+					error: 1001,
+					message: 'Invalid arguments'
+				}, 200);
+				return;
+			}
+		});
+	},
+	
+	// 获取用户信息
+	getUserinfo: function(req, res){
+		if(req.method != 'POST'){
+			util.sendObj.call(res, {
+				error: 2001,
+				message: 'Invalid request method'
+			});
+			return;
+		}
+		var b = new Buffer('');
+		req.on('data', function(chunk){
+			b = Buffer.concat([b, chunk]);
+		}).on('end', function(){
+			try{
+				var q = require('querystring').parse(b.toString());
+			}catch(e){
+				util.sendObj.call(res, {
+					error: 1001,
+					message: 'Invalid arguments'
+				}, 200);
+				return;
+			}
+			
+			if(q.token){
+				getUserinfo(q.token, function(e){
+					if(e){
+						util.sendObj.call(res, {
+							error: 0,
+							user: e
+						});
+					}else{
+						// 验证失败
+						util.sendObj.call(res, {
+							error: 1004,
+							message: 'Get user info fail'
 						}, 200);
 					}
 				});

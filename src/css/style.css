@@ -132,14 +132,56 @@ a{
 	margin: 12px;
 	box-sizing: border-box;
 	padding: 12px;
-	background: rgba(240,240,240,.6);
+	background: rgba(240,240,240,.4);
 	color: #555;
 	overflow: hidden;
 	border-radius: 3px;
 }
 
-.p_name{
+.p_info{
 	float: left;
+	overflow: hidden;
+}
+
+#change_avatar{
+	display: block;
+	float: left;
+	margin-left: 12px;
+}
+
+#change_avatar img{
+	display: block;
+	height: 62px;
+	width: 62px;
+	border: solid 2px #fff;
+}
+
+.p_i{
+	float: left;
+	margin-left: 12px;
+	overflow: hidden;
+}
+
+.p_name,.p_cup{
+	height: 31px;
+	line-height: 31px;
+}
+
+.p_cup{
+	padding-left: 32px;
+	background: url(/image/cup.svg) no-repeat 2px center;
+	background-size: 24px 24px;
+	color: #fff;
+}
+
+.p_name{
+	color: #fff;
+	clear: left;
+}
+
+.p_level{
+	color: #fea033;
+	margin-right: 12px;
 }
 
 .p_gstatics{
@@ -156,4 +198,80 @@ a{
 
 .p_gstatics span{
 	margin: 0 6px;
+}
+
+.p_exp{
+	float: left;
+	height: 3px;
+	background: #255263;
+	width: 200px;
+	margin-top: 12px;
+	margin-left: 12px;
+	border-radius: 2px;
+	overflow: hidden;
+}
+.p_exp div{
+	height: 100%;
+	background: #fff;
+	float: left;
+}
+
+#addnewdeck{
+	display: block;
+	width: 60%;
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	background: #2ed556;
+	margin: 0 auto;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.decklist{
+	padding: 12px;
+}
+
+.decklist div{
+	overflow: hidden;
+	margin-bottom: 12px;
+}
+
+.decklist div a{
+	margin-right: 6px;
+	box-sizing: border-box;
+	display: block;
+	border-radius: 5px;
+}
+.decklist div a:last-of-type{
+	margin: 0;
+}
+.decklist .title{
+	line-height: 40px;
+	height: 40px;
+	background: #758a9c;
+	width: calc(100% - 192px);
+	box-sizing: border-box;
+	text-indent: 12px;
+	color: #fff;
+}
+.decklist .seton,
+.decklist .delete{
+	width: 80px;
+	height: 40px;
+	line-height: 40px;
+	float: right;
+	margin-left: 6px;
+	color: #fff;
+	text-align: center;
+}
+
+.decklist .delete{
+	background: #fe453d;
+}
+.decklist .seton{
+	background: #2576fd;
+}
+.decklist .seton.off{
+	background: #dedede;
 }
